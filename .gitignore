@@ -1,0 +1,7 @@
+/.direnv
+/.envrc
+
+/data/
+/invoice.pdf
+/invoice.png
+/invoice-data.toml

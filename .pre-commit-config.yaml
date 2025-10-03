@@ -1,0 +1,15 @@
+repos:
+  - repo: https://github.com/jupblb/pre-commit-pandoc
+    rev: v1.0.0
+    hooks:
+      - id: pandoc
+
+  - repo: local
+    hooks:
+      - id: typstyle
+        name: Format Typst files with typstyle
+        entry: typstyle -i
+        language: system
+        types: [file]
+        files: '\.typ$'
+        pass_filenames: true

@@ -1,0 +1,43 @@
+# Invoice configuration template
+# Copy this file to invoice-data.toml and fill in your actual values
+
+invoice_date = "2025-01-01"
+invoice_number = 1
+
+# Exchange rate (auto-fetched from NBP; DO NOT EDIT)
+exchange_rate = 4.0000  # fetch-exchange-rate.py
+exchange_date = "2024-12-31"  # fetch-exchange-rate.py
+
+[seller]
+name = "Your Name"
+address_line1 = "Street Address"
+address_line2 = "City, Postal Code"
+country = "Country"
+country_pl = "Country in Polish"
+tax_id = "Tax ID"
+
+[buyer]
+name = "Buyer Name"
+address_line1 = "Buyer Address Line 1"
+address_line2 = "Buyer Address Line 2"
+country = "Country"
+country_pl = "Country in Polish"
+
+[bank]
+iban = "IBAN Number"
+swift = "SWIFT Code"
+bank_name = "Bank Name"
+
+[[items]]
+name = "Service Name"
+name_pl = "Polish translation"
+quantity = 1
+price_net = 1.00
+vat_rate = 0.00
+
+[[items]]
+name = "Other Service Name"
+name_pl = "Polish translation"
+quantity = 2
+price_net = 2.00
+vat_rate = 0.00
