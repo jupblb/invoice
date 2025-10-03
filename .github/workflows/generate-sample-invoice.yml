@@ -10,6 +10,9 @@ on:
       - invoice-data.toml.tmpl
       - fetch-exchange-rate.py
 
+permissions:
+  contents: write
+
 jobs:
   generate-invoice:
     runs-on: self-hosted
@@ -28,8 +31,13 @@ jobs:
             typst compile invoice.typ
           '
 
-      - name: Upload invoice PDF
-        uses: actions/upload-artifact@v4
+      - name: Create/update release with PDF
+        uses: softprops/action-gh-release@v1
         with:
-          name: sample-invoice
-          path: invoice.pdf
+          tag_name: latest
+          name: Latest Sample Invoice
+          files: invoice.pdf
+          prerelease: true
+          body: Auto-generated sample invoice from template
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
