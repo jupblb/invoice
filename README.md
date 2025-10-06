@@ -1,7 +1,6 @@
 # Invoice Generator
 
-**Personal project** for generating *my* invoices as a Polish contractor working
-with US clients.
+**Personal project** for generating *my* invoices.
 
 Generates professional bilingual invoices (English/Polish) in PDF format with
 automatic USD/PLN exchange rates from the Polish National Bank (NBP).
