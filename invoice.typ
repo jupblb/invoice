@@ -98,7 +98,7 @@
 )[
   #align(center)[
     #text(size: 18pt, weight: "bold")[
-      Invoice (faktura) № (nr)
+      Invoice (faktura)
       #format_invoice_number(invoice_number, invoice_date)
     ]
   ]
@@ -187,14 +187,15 @@ Bank account #text(size: 9pt)[(konto bankowe)]:
   ..for (idx, item) in items.enumerate() {
     let net_worth = item.quantity * item.price_net
     let gross_worth = net_worth * (1 + item.vat_rate)
+
     let vat_display_with_footnote = if item.vat_rate == 0 {
-      if idx == 0 {
+      if items.slice(0, idx).all(i => i.vat_rate != 0) {
         [
           N/A
-          #footnote[
+          #super[#footnote[
             Reverse charge: the buyer is the VAT taxpayer
             (odwrotne obciążenie: nabywca jest płatnikiem VAT).
-          ]<reverse-charge> \
+          ]<reverse-charge>] \
           #text(size: 8pt)[(NP)]
         ]
       } else {
@@ -203,9 +204,49 @@ Bank account #text(size: 9pt)[(konto bankowe)]:
     } else {
       str(int(item.vat_rate * 100)) + "%"
     }
+
+    let secondary_charge = if "secondary_charge" in item {
+      item.secondary_charge
+    } else {
+      false
+    }
+
+    let is_first_secondary = items
+      .slice(0, idx)
+      .all(it => {
+        let sc = if "secondary_charge" in it {
+          it.secondary_charge
+        } else {
+          false
+        }
+        not sc
+      })
+
+    let name_with_footnote = if secondary_charge {
+      if is_first_secondary {
+        [
+          #item.name
+          #super[#footnote[
+            Reimbursement of costs essential for service delivery, as per the
+            agreement (pokrycie kosztów niezbędnych do realizacji usługi
+            kompleksowej, zgodnie z umową).
+          ]<secondary-charge>] \
+          #text(size: 8pt)[(#item.name_pl)]
+        ]
+      } else {
+        [
+          #item.name
+          #super[#ref(<secondary-charge>)] \
+          #text(size: 8pt)[(#item.name_pl)]
+        ]
+      }
+    } else {
+      [#item.name \ #text(size: 8pt)[(#item.name_pl)]]
+    }
+
     (
       str(idx + 1) + ".",
-      [#item.name \ #text(size: 8pt)[(#item.name_pl)]],
+      name_with_footnote,
       str(item.quantity),
       [
         #format_usd(item.price_net) \
