@@ -73,10 +73,7 @@
 
 // Format invoice number as: number/month/year
 #let format_invoice_number(num, date) = {
-  let month = if date.month() < 10 { "0" + str(date.month()) } else {
-    str(date.month())
-  }
-  str(num) + "/" + month + "/" + str(date.year())
+  "FV/" + date.display("[year]/[month padding:zero]/") + str(num)
 }
 
 // Document content starts here
