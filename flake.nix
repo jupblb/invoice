@@ -11,10 +11,15 @@
         devShells.default = pkgs.mkShell({
           buildInputs = with pkgs; [
             gnumake
+            liberation_ttf
             pandoc poppler_utils pre-commit pyright python3
             ruff
             tinymist typst typstyle
           ];
+
+          shellHook = ''
+            export TYPST_FONT_PATHS="${pkgs.liberation_ttf}/share/fonts"
+          '';
         });
       }
     );
