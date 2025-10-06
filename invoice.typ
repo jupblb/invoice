@@ -82,7 +82,13 @@
 // Document content starts here
 #align(right)[
   #text(size: 10pt)[
-    Date of issue (data wystawienia): #invoice_date.display("[year]-[month]-[day]")
+    Date of issue (data wystawienia):
+    #invoice_date.display("[year]-[month]-[day]")
+  ]
+  \
+  #text(size: 10pt)[
+    Date of sale (data sprzedaży):
+    #invoice_date.display("[year]-[month]-[day]")
   ]
 ]
 
@@ -228,7 +234,7 @@ Bank account #text(size: 9pt)[(konto bankowe)]:
   gutter: 1em,
   row-gutter: 0.25em,
   [
-    #strong[Subtotal:] \
+    #strong[Total to pay:] \
     #text(size: 8pt)[(do zapłaty)]
   ],
   [
@@ -243,4 +249,8 @@ Bank account #text(size: 9pt)[(konto bankowe)]:
   Exchange rate of (wg kursu z dnia)
   #text[#exchange_date.display("[year]-[month]-[day]"):]
   #strong[#str(exchange_rate) PLN]
+  #footnote[
+    Source: NBP Exchange rates archive – table A
+    (źródło: NBP Archiwum kursów średnich – tabela A).
+  ]
 ]
