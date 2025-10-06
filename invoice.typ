@@ -186,40 +186,40 @@ Bank account #text(size: 9pt)[(konto bankowe)]:
   // Items
   ..for (idx, item) in items.enumerate() {
     let net_worth = item.quantity * item.price_net
-    let vat_amount = net_worth * item.vat_rate
-    let gross_worth = net_worth + vat_amount
-    let vat_display = if item.vat_rate == 0 {
-      "N/A"
+    let gross_worth = net_worth * (1 + item.vat_rate)
+    let vat_display_with_footnote = if item.vat_rate == 0 {
+      if idx == 0 {
+        [
+          N/A
+          #footnote[
+            Reverse charge: the buyer is the VAT taxpayer
+            (odwrotne obciążenie: nabywca jest płatnikiem VAT).
+          ]<reverse-charge> \
+          #text(size: 8pt)[(NP)]
+        ]
+      } else {
+        [N/A #super[#ref(<reverse-charge>)] \ #text(size: 8pt)[(NP)]]
+      }
     } else {
       str(int(item.vat_rate * 100)) + "%"
     }
-    // Check if this is the first item with 0% VAT
-    let is_first_zero_vat = (
-      item.vat_rate == 0 and items.slice(0, idx).all(i => i.vat_rate != 0)
-    )
     (
       str(idx + 1) + ".",
       [#item.name \ #text(size: 8pt)[(#item.name_pl)]],
       str(item.quantity),
-      [#format_usd(item.price_net) \ #text(size: 8pt)[#format_pln(
-          item.price_net * exchange_rate,
-        )]],
-      [#format_usd(net_worth) \ #text(size: 8pt)[#format_pln(
-          net_worth * exchange_rate,
-        )]],
-      [#vat_display#if item.vat_rate == 0 [
-          #if is_first_zero_vat [
-            #footnote[
-              Reverse charge: the buyer is the VAT taxpayer
-              (odwrotne obciążenie: nabywca jest płatnikiem VAT).
-            ]<reverse-charge>
-          ] else [
-            #super[#ref(<reverse-charge>)]
-          ]
-        ]],
-      [#format_usd(gross_worth) \ #text(size: 8pt)[#format_pln(
-          gross_worth * exchange_rate,
-        )]],
+      [
+        #format_usd(item.price_net) \
+        #text(size: 8pt)[#format_pln(item.price_net * exchange_rate)]
+      ],
+      [
+        #format_usd(net_worth) \
+        #text(size: 8pt)[#format_pln(net_worth * exchange_rate)]
+      ],
+      vat_display_with_footnote,
+      [
+        #format_usd(gross_worth) \
+        #text(size: 8pt)[#format_pln(gross_worth * exchange_rate)]
+      ],
     )
   },
 )
